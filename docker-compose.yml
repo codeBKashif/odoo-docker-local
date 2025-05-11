@@ -1,0 +1,32 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: odoo
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: odoo
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  odoo:
+    build: .
+    depends_on:
+      - db
+    ports:
+      - "8069:8069"
+    volumes:
+      - odoo-addons:/mnt/extra-addons
+      - ./odoo.conf:/etc/odoo/odoo.conf
+      - ./logs:/var/log/odoo
+    environment:
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=odoo
+    entrypoint: ["/entrypoint.sh"]
+    command: ["-c", "/etc/odoo/odoo.conf", "-d", "mydb", "--db-filter=^mydb$", "--init=base"]
+
+volumes:
+  db-data:
+  odoo-addons:
