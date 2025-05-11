@@ -1,2 +1,2 @@
 # odoo-docker-local
-This is a simple setup using odoo 17 using PSQL 13
+This is a simple setup using docker that run odoo 17 with PSQL 13
